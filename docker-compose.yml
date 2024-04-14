@@ -6,3 +6,30 @@ services:
     command: python manage.py runserver 0.0.0.0:8000
     ports:
       - "80:8000"
+    networks:
+      - app_internal
+
+  database:
+    image: postgres
+    restart: always
+    environment:
+      POSTGRES_DB: django
+      POSTGRES_USER: admin
+      POSTGRES_PASSWORD: password
+    volumes:
+      - psql_db:/var/lib/postgresql/data
+    networks:
+      - app_internal
+
+  adminer:
+    image: adminer
+    ports:
+      - "8001:8080"
+    networks:
+      - app_internal
+
+networks:
+  app_internal:
+
+volumes:
+  psql_db:
